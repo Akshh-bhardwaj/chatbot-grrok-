@@ -1,3 +1,5 @@
+
+
 Grok - A Simple Chatbot in C
 
 Grok is a simple chatbot written in C that responds to user input with jokes, facts, greetings, and basic file operations. It provides interactive responses and can read, write, and append to files.
@@ -22,7 +24,7 @@ Installation
 
 Clone the repository:
 
-git clone https://github.com/Akshh-bhardwaj/chatbot-grrok-/tree/main
+git clone https://github.com/Akshh-bhardwaj/chatbot-grrok-
 cd chatbot-grrok-
 
 Compile the program:
