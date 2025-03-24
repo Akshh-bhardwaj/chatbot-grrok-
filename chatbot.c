@@ -128,12 +128,22 @@ int main() {
             read_file(filename);
         } else if (strstr(input, "write")) {
             char filename[MAX_INPUT], content[MAX_INPUT];
-            sscanf(input, "write %s %[^"]", filename, content);
+            sscanf(input, "write %s %[^]", filename, content);
             write_file(filename, content);
         } else if (strstr(input, "append")) {
             char filename[MAX_INPUT], content[MAX_INPUT];
-            sscanf(input, "append %s %[^"]", filename, content);
+            sscanf(input, "append %s %[^]", filename, content);
             append_file(filename, content);
+        } else if (strstr(input, "help")) {
+            printf("Grok: Here are some things I can do:\n");
+            printf("- Say hello: 'hello', 'hi', 'hey'\n");
+            printf("- Tell a joke: 'joke'\n");
+            printf("- Share a fact: 'fact'\n");
+            printf("- Tell the current time: 'time'\n");
+            printf("- Read a file: 'read <filename>'\n");
+            printf("- Write to a file: 'write <filename> \"content\"'\n");
+            printf("- Append to a file: 'append <filename> \"content\"'\n");
+            printf("- Exit: 'bye'\n");
         } else if (strstr(input, "bye")) {
             printf("Grok: Goodbye! Have a great day!\n");
             break;
@@ -141,6 +151,5 @@ int main() {
             printf("Grok: I'm not sure how to respond to that. Can you ask something else?\n");
         }
     }
-
     return 0;
 }
