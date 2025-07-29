@@ -63,6 +63,9 @@ Basic knowledge of C and console applications
 🧠 Inspiration
 This project is inspired by the ELIZA chatbot and aims to replicate basic chatbot logic using if-else based condition handling and simple string comparison.
 
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
+
+
 👨‍💻 Author
 Akshh Bhardwaj
 
