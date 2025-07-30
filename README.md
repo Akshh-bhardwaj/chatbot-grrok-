@@ -12,9 +12,7 @@ Customizable dataset of responses
 
 User input handling using string functions
 
-📷 Screenshot
 
-(You can replace this with an actual screenshot of the running chatbot)
 
 🧪 Example
 vbnet
