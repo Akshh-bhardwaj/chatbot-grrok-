@@ -13,12 +13,14 @@ char reminders[MAX_REMINDERS][MAX_INPUT];
 int history_count = 0;
 int reminder_count = 0;
 
+// Print current time
 void get_time() {
     time_t t;
     time(&t);
     printf("Grok: The current time is %s", ctime(&t));
 }
 
+// Random joke
 void tell_joke() {
     const char *jokes[] = {
         "Why don’t skeletons fight each other? They don’t have the guts.",
@@ -32,10 +34,12 @@ void tell_joke() {
         "Why couldn’t the bicycle stand up by itself? It was two-tired!",
         "What did one wall say to the other wall? I'll meet you at the corner!"
     };
-    int random_index = rand() % 10;
+    int num_jokes = sizeof(jokes)/sizeof(jokes[0]);
+    int random_index = rand() % num_jokes;
     printf("Grok: %s\n", jokes[random_index]);
 }
 
+// Random fact
 void tell_fact() {
     const char *facts[] = {
         "Honey never spoils.",
@@ -49,13 +53,15 @@ void tell_fact() {
         "A shrimp's heart is in its head.",
         "Butterflies can taste with their feet."
     };
-    int random_index = rand() % 10;
+    int num_facts = sizeof(facts)/sizeof(facts[0]);
+    int random_index = rand() % num_facts;
     printf("Grok: %s\n", facts[random_index]);
 }
 
+// Read file
 void read_file(const char *filename) {
     FILE *file = fopen(filename, "r");
-    if (file == NULL) {
+    if (!file) {
         printf("Grok: Unable to open file %s for reading.\n", filename);
         return;
     }
@@ -67,9 +73,10 @@ void read_file(const char *filename) {
     fclose(file);
 }
 
+// Write file
 void write_file(const char *filename, const char *content) {
     FILE *file = fopen(filename, "w");
-    if (file == NULL) {
+    if (!file) {
         printf("Grok: Unable to open file %s for writing.\n", filename);
         return;
     }
@@ -78,9 +85,10 @@ void write_file(const char *filename, const char *content) {
     printf("Grok: File %s has been written successfully.\n", filename);
 }
 
+// Append file
 void append_file(const char *filename, const char *content) {
     FILE *file = fopen(filename, "a");
-    if (file == NULL) {
+    if (!file) {
         printf("Grok: Unable to open file %s for appending.\n", filename);
         return;
     }
@@ -89,6 +97,7 @@ void append_file(const char *filename, const char *content) {
     printf("Grok: Content appended to file %s successfully.\n", filename);
 }
 
+// Respond to greetings
 void respond_to_greeting() {
     const char *greetings[] = {
         "Hey there! How’s your day going?",
@@ -102,10 +111,12 @@ void respond_to_greeting() {
         "Hey! Looking for something interesting today?",
         "Hello! What’s on your mind?"
     };
-    int random_index = rand() % 10;
+    int num_greetings = sizeof(greetings)/sizeof(greetings[0]);
+    int random_index = rand() % num_greetings;
     printf("Grok: %s\n", greetings[random_index]);
 }
 
+// Main chatbot loop
 int main() {
     char input[MAX_INPUT];
     srand(time(NULL)); // Initialize random seed
@@ -114,42 +125,52 @@ int main() {
     while (1) {
         printf("You: ");
         fgets(input, sizeof(input), stdin);
-        input[strcspn(input, "\n")] = 0; // Remove newline character
+        input[strcspn(input, "\n")] = 0; // Remove newline
 
-        if (strstr(input, "hello") || strstr(input, "hi") || strstr(input, "hey")) {
+        // Lowercase input for easier matching
+        char input_lower[MAX_INPUT];
+        strcpy(input_lower, input);
+        for (int i = 0; input_lower[i]; i++) input_lower[i] = tolower(input_lower[i]);
+
+        if (strstr(input_lower, "hello") || strstr(input_lower, "hi") || strstr(input_lower, "hey")) {
             respond_to_greeting();
-        } else if (strstr(input, "joke")) {
+        } else if (strstr(input_lower, "joke")) {
             tell_joke();
-        } else if (strstr(input, "fact")) {
+        } else if (strstr(input_lower, "fact")) {
             tell_fact();
-        } else if (strstr(input, "read")) {
+        } else if (strstr(input_lower, "time")) {
+            get_time();
+        } else if (strstr(input_lower, "read")) {
             char filename[MAX_INPUT];
             sscanf(input, "read %s", filename);
             read_file(filename);
-        } else if (strstr(input, "write")) {
-            char filename[MAX_INPUT], content[MAX_INPUT];
-            sscanf(input, "write %s %[^]", filename, content);
+        } else if (strstr(input_lower, "write")) {
+            char filename[MAX_INPUT];
+            sscanf(input, "write %s", filename);
+            char *content = strstr(input, filename) + strlen(filename) + 1;
             write_file(filename, content);
-        } else if (strstr(input, "append")) {
-            char filename[MAX_INPUT], content[MAX_INPUT];
-            sscanf(input, "append %s %[^]", filename, content);
+        } else if (strstr(input_lower, "append")) {
+            char filename[MAX_INPUT];
+            sscanf(input, "append %s", filename);
+            char *content = strstr(input, filename) + strlen(filename) + 1;
             append_file(filename, content);
-        } else if (strstr(input, "help")) {
+        } else if (strstr(input_lower, "help")) {
             printf("Grok: Here are some things I can do:\n");
             printf("- Say hello: 'hello', 'hi', 'hey'\n");
             printf("- Tell a joke: 'joke'\n");
             printf("- Share a fact: 'fact'\n");
             printf("- Tell the current time: 'time'\n");
             printf("- Read a file: 'read <filename>'\n");
-            printf("- Write to a file: 'write <filename> \"content\"'\n");
-            printf("- Append to a file: 'append <filename> \"content\"'\n");
+            printf("- Write to a file: 'write <filename> content'\n");
+            printf("- Append to a file: 'append <filename> content'\n");
             printf("- Exit: 'bye'\n");
-        } else if (strstr(input, "bye")) {
+        } else if (strstr(input_lower, "bye")) {
             printf("Grok: Goodbye! Have a great day!\n");
             break;
         } else {
             printf("Grok: I'm not sure how to respond to that. Can you ask something else?\n");
         }
     }
+
     return 0;
 }
